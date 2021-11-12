@@ -1,0 +1,32 @@
+input[type=text] {
+    font-size: 18px;
+    color: black;
+}
+
+textarea {
+    font-size: 18px !important;
+    color: black !important;
+}
+
+.red-highlight {
+    background-color: #e3788f;
+}
+
+.vio-higlight {
+    background-color: #d0bfff;
+}
+
+.yellow-highlight{
+    background-color: #dadba2;
+}
+
+.green-highlight {
+    background-color: #aae3aa;
+}
+
+.blue-highlight {
+    background-color: #7fa2e3;
+}
+.orange-highlight {
+    background-color: #edb780;
+}

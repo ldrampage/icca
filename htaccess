@@ -1,0 +1,92 @@
+# Kirby .htaccess
+
+# rewrite rules
+<IfModule mod_rewrite.c>
+
+# enable awesome urls. i.e.:
+# http://yourdomain.com/about-us/team
+RewriteEngine on
+
+php_value post_max_size 4096M
+php_value upload_max_filesize 4096M
+php_value max_execution_time 6000000
+php_value max_file_uploads 50
+
+
+
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?page=$1&id=$2
+# make sure to set the RewriteBase correctly
+# if you are running the site in a subfolder.
+# Otherwise links or the entire site will break.
+#
+# If your homepage is http://yourdomain.com/mysite
+# Set the RewriteBase to:
+#
+# RewriteBase /mysite
+
+# block text files in the content folder from being accessed directly
+RewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]
+
+# block all files in the site folder from being accessed directly
+RewriteRule ^site/(.*) index.php [L]
+
+# block all files in the kirby folder from being accessed directly
+RewriteRule ^kirby/(.*) index.php [L]
+
+# make panel links work
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^panel/(.*) panel/index.php [L]
+
+# make site links work
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*) index.php [L]
+
+
+# Your document html
+  ExpiresByType text/html "access plus 0 seconds"
+
+# Media: images, video, audio
+  ExpiresByType audio/ogg "access plus 1 month"
+  ExpiresByType image/gif "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType video/mp4 "access plus 1 month"
+  ExpiresByType video/ogg "access plus 1 month"
+  ExpiresByType video/webm "access plus 1 month"
+
+# CSS and JavaScript
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+
+
+Header unset ETag
+</IfModule>
+FileETag None
+
+
+# Kirby .htaccess
+<IfModule LiteSpeed>
+    CacheEnable public
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} ^GET|HEAD$
+    RewriteCond %{HTTP_HOST} ^[acp.backoffice-services].net [NC]
+    RewriteCond %{REQUEST_URI} !login|admin|register|post|cron
+    RewriteCond %{QUERY_STRING} !nocache
+    RewriteRule .* - [E=Cache-Control:max-age=28800]
+</IfModule>
+
+
+# 1 Month for most static assets
+<filesMatch ".(css|jpg|jpeg|png|gif|js|ico)$">
+Header set Cache-Control "max-age=2592000, public"
+</filesMatch>
+
+
+# Additional recommended values
+# Remove comments for those you want to use.
+#
+# AddDefaultCharset UTF-8
+#
+# php_flag short_open_tag on
